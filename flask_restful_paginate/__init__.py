@@ -16,19 +16,19 @@ class Pagination:
         app.extensions['paginate'] = self
 
     def paginate(self, query, schema):
-        page = request.args.get('page', self.DEFAULT_PAGE_NUMBER)
-        per_page = request.args.get('page_size', self.DEFAULT_PAGE_SIZE)
-        page_obj = query.paginate(page=page, per_page=per_page)
+        page_num = request.args.get('page', self.DEFAULT_PAGE_NUMBER)
+        size = request.args.get('size', self.DEFAULT_PAGE_SIZE)
+        page_obj = query.paginate(page=page_num, per_page=size)
         next_page = url_for(
             request.endpoint,
             page=page_obj.next_num if page_obj.has_next else page_obj.page,
-            per_page=per_page,
+            size=size,
             **request.view_args
         )
         prev = url_for(
             request.endpoint,
             page=page_obj.prev_num if page_obj.has_prev else page_obj.page,
-            per_page=per_page,
+            size=size,
             **request.view_args
         )
 
