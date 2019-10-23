@@ -1,9 +1,11 @@
+import json
+from importlib import util
 from flask import request, url_for
 
 
 class Pagination:
     DEFAULT_PAGE_SIZE = 20
-    DEFAULT_PAGE_NUMBER = 0
+    DEFAULT_PAGE_NUMBER = 1
 
     def __init__(self, app=None):
         self.app = app
@@ -31,11 +33,16 @@ class Pagination:
             size=size,
             **request.view_args
         )
+        restful = util.find_spec('flask_restful')
+        if restful:
+            import flask_restful as f
+        else:
+            import flask_restplus as f
 
         return {
             'total': page_obj.total,
             'pages': page_obj.pages,
             'next': next_page,
             'prev': prev,
-            'results': schema.dump(page_obj.items).data
+            'results': json.dumps(f.marshal(page_obj.items, schema))
         }
