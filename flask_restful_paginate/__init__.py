@@ -1,4 +1,3 @@
-import json
 from importlib import util
 from flask import request, url_for
 
@@ -6,13 +5,17 @@ from flask import request, url_for
 class Pagination:
     DEFAULT_PAGE_SIZE = 20
     DEFAULT_PAGE_NUMBER = 1
+    _page_param = 'page'
+    _size_param = 'size'
 
     def __init__(self, app=None):
         self.app = app
         if app is not None:
             self.init_app(app)
 
-    def init_app(self, app):
+    def init_app(self, app, page_param='page', size_param='size'):
+        self._page_param = page_param
+        self._size_param = size_param
         app.config.setdefault('DEFAULT_PAGE_SIZE', self.DEFAULT_PAGE_SIZE)
         app.config.setdefault('DEFAULT_PAGE_NUMBER', self.DEFAULT_PAGE_NUMBER)
         app.extensions['paginate'] = self
@@ -44,5 +47,8 @@ class Pagination:
             'pages': page_obj.pages,
             'next': next_page,
             'prev': prev,
-            'results': json.dumps(f.marshal(page_obj.items, schema))
+            'results': f.marshal(page_obj.items, schema)
         }
+
+    def create_pagination_schema(self):
+        pass
