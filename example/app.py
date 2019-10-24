@@ -67,10 +67,8 @@ class Author(Resource):
 
 
 class AuthorList(Resource):
-    @marshal_with(author_fields)
     def get(self):
-        # print(pagination.paginate(AuthorModel.query, author_fields))
-        return AuthorModel.query.all()
+        return pagination.paginate(AuthorModel.query, author_fields)
 
 
 """
@@ -87,7 +85,7 @@ Seed database
 """
 def seed():
     fake = Faker()
-    for i in range(10):
+    for i in range(100):
         db.session.add(AuthorModel(name=fake.name()))
         for j in range(10):
             db.session.add(PostModel(title=fake.sentence(), content=fake.text(), author_id=i))
