@@ -9,8 +9,14 @@ Initialize the app
 """
 app = Flask(__name__)
 api = Api(app)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///paginate-test.db"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+app.config['PAGINATE_PAGE_SIZE'] = 20
+# app.config['PAGINATE_PAGE_PARAM'] = "pagenumber"
+# app.config['PAGINATE_SIZE_PARAM'] = "chunksize"
 pagination = Pagination(app)
 
 
