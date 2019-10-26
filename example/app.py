@@ -18,7 +18,7 @@ app.config['PAGINATE_PAGE_SIZE'] = 20
 app.config['PAGINATE_PAGE_PARAM'] = "pagenumber"
 app.config['PAGINATE_SIZE_PARAM'] = "pagesize"
 # app.config['PAGINATE_RESOURCE_LINKS_ENABLED'] = False
-pagination = Pagination(app)
+pagination = Pagination(app, db)
 
 
 """
