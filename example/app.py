@@ -15,8 +15,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 app.config['PAGINATE_PAGE_SIZE'] = 20
-# app.config['PAGINATE_PAGE_PARAM'] = "pagenumber"
-# app.config['PAGINATE_SIZE_PARAM'] = "chunksize"
+app.config['PAGINATE_PAGE_PARAM'] = "pagenumber"
+app.config['PAGINATE_SIZE_PARAM'] = "pagesize"
+# app.config['PAGINATE_RESOURCE_LINKS_ENABLED'] = False
 pagination = Pagination(app)
 
 
@@ -67,14 +68,15 @@ class PostList(Resource):
 
 
 class Author(Resource):
-    @marshal_with(author_fields)
+    # @marshal_with(author_fields)
     def get(self, author_id):
-        return AuthorModel.query.filter_by(id=author_id).first()
+        return pagination.paginate(AuthorModel.query.filter_by(id=author_id), author_fields)
 
 
 class AuthorList(Resource):
     def get(self):
-        return pagination.paginate(AuthorModel.query, author_fields)
+        # return pagination.paginate(AuthorModel.query, author_fields)
+        return pagination.paginate(AuthorModel, author_fields)
 
 
 """
