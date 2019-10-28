@@ -29,22 +29,22 @@ class Pagination:
         app.extensions['paginate'] = self
 
     def paginate(self, query_model, schema):
-        # TODO: refactor string to integer checking/conversion
+        def _is_integer(num):
+            if num is not None and num.isdigit():
+                return True
+
         query_page = request.args.get(self._page_param)
         query_size = request.args.get(self._size_param)
 
-        if query_page is not None and query_page.isdigit():
-            query_page = int(query_page)
+        if _is_integer(query_page):
+            page_num = int(query_page)
         else:
-            query_page = self.DEFAULT_PAGE_NUMBER
+            page_num = self.DEFAULT_PAGE_NUMBER
 
-        if query_size is not None and query_size.isdigit():
-            query_size = int(query_size)
+        if _is_integer(query_size):
+            size = int(query_size)
         else:
-            query_size = self._default_page_size
-
-        page_num = query_page or self.DEFAULT_PAGE_NUMBER
-        size = query_size or self._default_page_size
+            size = self._default_page_size
 
         # if Model, run the default query
         if isinstance(query_model, type(self._db.Model)):
@@ -55,33 +55,27 @@ class Pagination:
             # this will be a BaseQuery instance, and so we can call paginate directly
             page_obj = query_model.paginate(page=page_num, per_page=size, error_out=False)
 
-        # TODO: refactor this whole bit
         prev_page = None
         next_page = None
         if self._resource_links_enabled:
+            def _get_page_link(page_number=None):
+                if page_number is not None:
+                    request.view_args[self._page_param] = page_number
+
+                return url_for(request.endpoint, **request.view_args)
+
+
             request.view_args = {**request.view_args, **request.args.to_dict()}
 
             request.view_args[self._size_param] = page_obj.per_page
 
-            request.view_args[self._page_param] = page_obj.page
-            current_page = url_for(
-                request.endpoint,
-                **request.view_args
-            )
+            current_page = _get_page_link(page_obj.page)
 
             if page_obj.has_next:
-                request.view_args[self._page_param] = page_obj.next_num
-                next_page = url_for(
-                    request.endpoint,
-                    **request.view_args
-                )
+                next_page = _get_page_link(page_obj.next_num)
 
             if page_obj.has_prev:
-                request.view_args[self._page_param] = page_obj.prev_num
-                prev_page = url_for(
-                    request.endpoint,
-                    **request.view_args
-                )
+                prev_page = _get_page_link(page_obj.prev_num)
 
         else:
             if page_obj.has_prev:
@@ -114,9 +108,10 @@ class Pagination:
 
         return {
             # TODO: use a better name for the pagination object
-            'pagination': OrderedDict(pagination_schema),
+            'pagination': OrderedDict(sorted(pagination_schema.items())),
             'data': f.marshal(page_obj.items, schema)
         }
 
+    # TODO: make the pagination schema configurable
     def create_pagination_schema(self):
         pass
