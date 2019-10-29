@@ -29,7 +29,7 @@ pagination = Pagination(app, db)
 
 ## Example:
 
-Check the `example` folder for an example of the extension.
+Check the [example](https://github.com/mtShaikh/flask-rest-paginate/tree/master/example) folder for an example of the extension.
 
 ## Contributing
 
