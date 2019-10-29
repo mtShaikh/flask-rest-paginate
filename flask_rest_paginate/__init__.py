@@ -64,8 +64,7 @@ class Pagination:
 
                 return url_for(request.endpoint, **request.view_args)
 
-
-            request.view_args = {**request.view_args, **request.args.to_dict()}
+            request.view_args = dict(**request.view_args, **request.args.to_dict())
 
             request.view_args[self._size_param] = page_obj.per_page
 

@@ -2,7 +2,7 @@ from faker import Faker
 from flask import Flask
 from flask_restful import Api, Resource, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
-from flask_restful_paginate import Pagination
+from flask_rest_paginate import Pagination
 
 """
 Initialize the app

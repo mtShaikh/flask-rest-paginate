@@ -1,4 +1,4 @@
-# Flask Paginate
+# Flask-Rest Paginate
 
 Pagination Extension for Flask RESTful and Flask RESTplus.
 
@@ -15,7 +15,7 @@ In your app, add the extension as follows
 from flask import Flask
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
-from flask_restful_paginate import Pagination
+from flask_rest_paginate import Pagination
 
 app = Flask(__name__)
 
