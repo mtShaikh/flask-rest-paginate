@@ -14,9 +14,9 @@ class Pagination:
         if app is not None:
             self.app = app
 
-            # TODO: rewrite the exception
+            # TODO: refactor this to raise exception only when db object is None
             if db is None:
-                raise Exception('Provide the db object along with app in Paginate Extension')
+                raise NameError('DB object required for Paginate.paginate() to function properly.')
 
             self._db = db
             self.init_app(app)
@@ -46,6 +46,7 @@ class Pagination:
         else:
             size = self._default_page_size
 
+        # TODO: linked to db exception
         # if Model, run the default query
         if isinstance(query_model, type(self._db.Model)):
             # `error_out` makes it so that it doesnt throw a 404 when page_num is

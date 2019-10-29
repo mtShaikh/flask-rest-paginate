@@ -14,9 +14,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///paginate-test.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-app.config['PAGINATE_PAGE_SIZE'] = 20
-app.config['PAGINATE_PAGE_PARAM'] = "pagenumber"
-app.config['PAGINATE_SIZE_PARAM'] = "pagesize"
+# Possible configurations for Paginate
+# app.config['PAGINATE_PAGE_SIZE'] = 20
+# app.config['PAGINATE_PAGE_PARAM'] = "pagenumber"
+# app.config['PAGINATE_SIZE_PARAM'] = "pagesize"
 # app.config['PAGINATE_RESOURCE_LINKS_ENABLED'] = False
 pagination = Pagination(app, db)
 
@@ -68,14 +69,16 @@ class PostList(Resource):
 
 
 class Author(Resource):
+    # No need to decorate with `marshal_with` as the function will marshal it automatically
     # @marshal_with(author_fields)
     def get(self, author_id):
+        # Can pass the query object with filters
         return pagination.paginate(AuthorModel.query.filter_by(id=author_id), author_fields)
 
 
 class AuthorList(Resource):
     def get(self):
-        # return pagination.paginate(AuthorModel.query, author_fields)
+        # Can also pass the model directly, in which case, no filters can be attached
         return pagination.paginate(AuthorModel, author_fields)
 
 
