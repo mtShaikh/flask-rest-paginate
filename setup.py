@@ -9,6 +9,13 @@ setup(
     author='mtShaikh',
     author_email='shaikh.taha95@gmail.com',
     description='Pagination extension for flask-restful and flask-restplus',
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Framework :: Flask',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python :: 3',
+    ],
     install_requires=[
         'flask-restful',
         'flask-sqlalchemy',
