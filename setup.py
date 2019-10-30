@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='flask-rest-paginate',
-    version='0.1',
+    version='0.1.0',
     packages=find_packages(),
     url='https://github.com/mtShaikh/flask-rest-paginate',
     license='MIT',
@@ -16,6 +16,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
     ],
+    keywords='rest flask-restful pagination',
     install_requires=[
         'flask-restful',
         'flask-sqlalchemy',
