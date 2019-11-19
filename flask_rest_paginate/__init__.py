@@ -18,10 +18,10 @@ class Pagination:
             if db is None:
                 raise NameError('DB object required for Paginate.paginate() to function properly.')
 
-            self._db = db
-            self.init_app(app)
+            self.init_app(app, db)
 
-    def init_app(self, app):
+    def init_app(self, app, db=None):
+        self._db = db
         self._page_param = app.config.setdefault('PAGINATE_PAGE_PARAM', 'page')
         self._size_param = app.config.setdefault('PAGINATE_SIZE_PARAM', 'size')
         self._default_page_size = app.config.setdefault('PAGINATE_PAGE_SIZE', 20)
