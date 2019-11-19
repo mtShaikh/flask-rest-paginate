@@ -28,7 +28,7 @@ class Pagination:
         self._resource_links_enabled = app.config.setdefault('PAGINATE_RESOURCE_LINKS_ENABLED', True)
         app.extensions['paginate'] = self
 
-    def paginate(self, query_model, schema):
+    def paginate(self, query_model, schema, marshmallow=False):
         def _is_integer(num):
             if num is not None and num.isdigit():
                 return True
@@ -109,7 +109,7 @@ class Pagination:
         return {
             # TODO: use a better name for the pagination object
             'pagination': OrderedDict(sorted(pagination_schema.items())),
-            'data': f.marshal(page_obj.items, schema)
+            'data': schema.load(page_obj.items, many=True) if marshmallow else f.marshal(page_obj.items, schema)
         }
 
     # TODO: make the pagination schema configurable
