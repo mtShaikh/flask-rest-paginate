@@ -16,6 +16,7 @@ setup(
     author_email='shaikh.taha95@gmail.com',
     description='Pagination extension for flask-restful and flask-restplus',
     long_description=long_description,
+    long_description_content_type='text/markdown',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Framework :: Flask',
