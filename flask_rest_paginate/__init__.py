@@ -12,16 +12,10 @@ class Pagination:
 
     def __init__(self, app=None, db=None):
         if app is not None:
-            self.app = app
+            self.init_app(app, db)
 
-            # TODO: refactor this to raise exception only when db object is None
-            if db is None:
-                raise NameError('DB object required for Paginate.paginate() to function properly.')
-
-            self._db = db
-            self.init_app(app)
-
-    def init_app(self, app):
+    def init_app(self, app, db=None):
+        self._db = db
         self._page_param = app.config.setdefault('PAGINATE_PAGE_PARAM', 'page')
         self._size_param = app.config.setdefault('PAGINATE_SIZE_PARAM', 'size')
         self._default_page_size = app.config.setdefault('PAGINATE_PAGE_SIZE', 20)
@@ -109,7 +103,7 @@ class Pagination:
         return {
             # TODO: use a better name for the pagination object
             'pagination': OrderedDict(sorted(pagination_schema.items())),
-            'data': schema.load(page_obj.items, many=True) if marshmallow else f.marshal(page_obj.items, schema)
+            'data': schema.dump(page_obj.items, many=True) if marshmallow else f.marshal(page_obj.items, schema)
         }
 
     # TODO: make the pagination schema configurable

@@ -27,6 +27,22 @@ pagination = Pagination(app, db)
 
 ```
 
+Use in your project as
+```py
+pagination.paginate(AuthorModel, author_schema)
+```
+
+You can also pass the `sqlalchemy` query object as
+```py
+pagination.paginate(AuthorModel.query.filter_by(id=author_id), author_schema)
+```
+
+If you want to use marshmallow schemas then set the third param `True`
+```py
+pagination.paginate(AuthorModel, marshamllow_author_schema, True)
+```
+
+
 ## Example:
 
 Check the [example](https://github.com/mtShaikh/flask-rest-paginate/tree/master/example) folder for an example of the extension.
