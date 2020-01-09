@@ -11,7 +11,7 @@ with open(path.join(this_directory, 'README.md')) as f:
 install_requires = ['flask-sqlalchemy']
 
 if util.find_spec('flask-restful'):
-    install_requires.append('flask-resful')
+    install_requires.append('flask-restful')
 else:
     install_requires.append('flask-restplus')
 
