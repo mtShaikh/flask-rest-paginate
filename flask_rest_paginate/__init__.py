@@ -1,6 +1,7 @@
 from importlib import util
 from collections import OrderedDict
 from flask import request, url_for
+import flask_restful as f
 
 
 class Pagination:
@@ -78,12 +79,6 @@ class Pagination:
                 next_page = page_obj.next_num
 
             current_page = page_obj.page
-
-        restful = util.find_spec('flask_restful')
-        if restful:
-            import flask_restful as f
-        else:
-            import flask_restplus as f
 
         # TODO: make the pagination schema configurable
         pagination_schema = {

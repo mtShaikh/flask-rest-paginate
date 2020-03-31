@@ -8,12 +8,7 @@ this_directory = path.abspath(path.dirname(__file__))
 with open(path.join(this_directory, 'README.md')) as f:
     long_description = f.read()
 
-install_requires = ['flask-sqlalchemy']
-
-if util.find_spec('flask-restful'):
-    install_requires.append('flask-resful')
-else:
-    install_requires.append('flask-restplus')
+install_requires = ['flask-sqlalchemy', 'flask-resful']
 
 setup(
     name='flask-rest-paginate',
@@ -23,7 +18,7 @@ setup(
     license='MIT',
     author='mtShaikh',
     author_email='shaikh.taha95@gmail.com',
-    description='Pagination extension for flask-restful and flask-restplus',
+    description='Pagination extension for flask-restful',
     long_description=long_description,
     long_description_content_type='text/markdown',
     classifiers=[
@@ -33,6 +28,6 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
     ],
-    keywords='rest flask-restful flask-restplus pagination flask',
+    keywords='rest flask-restful pagination flask',
     install_requires=install_requires,
 )

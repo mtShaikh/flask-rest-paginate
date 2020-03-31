@@ -1,6 +1,6 @@
 # Flask Rest Paginate
 
-A Pagination Extension for Flask RESTful and Flask RESTplus.
+A Pagination Extension for Flask RESTful.
 
 ## Installation
 
