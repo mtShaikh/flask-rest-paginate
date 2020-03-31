@@ -7,12 +7,12 @@ from os import path
 this_directory = path.abspath(path.dirname(__file__))
 with open(path.join(this_directory, 'README.md')) as f:
     long_description = f.read()
-    
+
 install_requires = ['flask-sqlalchemy', 'flask-resful']
 
 setup(
     name='flask-rest-paginate',
-    version='0.1.3',
+    version='0.1.4',
     packages=find_packages(),
     url='https://github.com/mtShaikh/flask-rest-paginate',
     license='MIT',
