@@ -8,7 +8,7 @@ this_directory = path.abspath(path.dirname(__file__))
 with open(path.join(this_directory, 'README.md')) as f:
     long_description = f.read()
 
-install_requires = ['flask-sqlalchemy', 'flask-resful']
+install_requires = ['flask-sqlalchemy', 'flask-restful']
 
 setup(
     name='flask-rest-paginate',
