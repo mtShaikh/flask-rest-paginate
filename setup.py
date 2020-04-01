@@ -12,7 +12,7 @@ install_requires = ['flask-sqlalchemy', 'flask-restful']
 
 setup(
     name='flask-rest-paginate',
-    version='0.1.4',
+    version='0.1.5',
     packages=find_packages(),
     url='https://github.com/mtShaikh/flask-rest-paginate',
     license='MIT',
