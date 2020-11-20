@@ -23,7 +23,25 @@ class Pagination:
         self._resource_links_enabled = app.config.setdefault('PAGINATE_RESOURCE_LINKS_ENABLED', True)
         app.extensions['paginate'] = self
 
-    def paginate(self, query_model, schema, marshmallow=False):
+    def paginate(self, query_model, schema, marshmallow=False, post_query_hook=None):
+        """
+        paginate the query
+        :param query_model:
+        Query object
+
+        :param schema:
+        Marshmallow Schema or Flask reqparse schema
+
+        :param marshmallow:
+        Flag to indicate schema param is a Marshmallow Schema object
+
+        :param post_query_hook:
+        function to be called on data fetched by the query. It can be
+        used to execute operations on the queried data
+        The function takes one argument: `func(data: List)` which is the list of retrieved objects
+         from the db and must returns a list containing the objects
+
+        """
         def _is_integer(num):
             if num is not None and num.isdigit():
                 return True
@@ -95,10 +113,16 @@ class Pagination:
         if next_page is not None:
             pagination_schema['next'] = next_page
 
+        items = page_obj.items
+        if post_query_hook:
+            items = post_query_hook(page_obj.items)
+        if not items:
+            raise ValueError("Incorrect signature")
+
         return {
             # TODO: use a better name for the pagination object
             'pagination': OrderedDict(sorted(pagination_schema.items())),
-            'data': schema.dump(page_obj.items, many=True) if marshmallow else f.marshal(page_obj.items, schema)
+            'data': schema.dump(items, many=True) if marshmallow else f.marshal(page_obj.items, schema)
         }
 
     # TODO: make the pagination schema configurable
