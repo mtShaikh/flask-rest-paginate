@@ -115,9 +115,10 @@ class Pagination:
 
         items = page_obj.items
         if post_query_hook:
-            items = post_query_hook(page_obj.items)
-        if not items:
-            raise ValueError("Incorrect signature")
+            try:
+                items = post_query_hook(page_obj.items)
+            except TypeError:
+                raise ValueError("Incorrect signature for hook")
 
         return {
             # TODO: use a better name for the pagination object
