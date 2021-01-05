@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/mtShaikh/flask-rest-paginate/compare/v1.1.0...v1.1.1) (2021-01-05)
+
+
+### Bug Fixes
+
+* corrected incorrect signature error propagtion ([41c524d](https://github.com/mtShaikh/flask-rest-paginate/commit/41c524d3e6af74cd50f9e6e91f46369972214a80))
+
 ## 1.1.0 (2020-11-20)
 
 
