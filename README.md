@@ -42,6 +42,24 @@ If you want to use marshmallow schemas then set the third param `True`
 pagination.paginate(AuthorModel, marshamllow_author_schema, True)
 ```
 
+## Customize your pagination schema
+
+If you want create a custom pagination schema. You will create a custom pagination class and override the create_pagination_schema 
+```
+from flask_rest_pagination import Pagination
+
+class MyCustomPaginationSchema(Pagination):
+    def create_pagination_schema(self, current_page, page_obj):
+        return {
+            'next': page_obj.has_next,
+            'prev': page_obj.has_prev,
+            'current': current_page,
+            'pages': page_obj.pages,
+            'perPage': page_obj.per_page,
+            'total': page_obj.total,
+        }
+``` 
+
 
 ## Example:
 

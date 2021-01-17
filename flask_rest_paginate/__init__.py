@@ -99,15 +99,7 @@ class Pagination:
             current_page = page_obj.page
 
         # TODO: make the pagination schema configurable
-        pagination_schema = {
-            'hasNext': page_obj.has_next,
-            'hasPrev': page_obj.has_prev,
-            'currentPage': current_page,
-            'pages': page_obj.pages,
-            'size': page_obj.per_page,
-            'totalElements': page_obj.total,
-        }
-
+        pagination_schema = self.create_pagination_schema(current_page, page_obj)
         if prev_page is not None:
             pagination_schema['prev'] = prev_page
         if next_page is not None:
@@ -126,6 +118,19 @@ class Pagination:
             'data': schema.dump(items, many=True) if marshmallow else f.marshal(page_obj.items, schema)
         }
 
-    # TODO: make the pagination schema configurable
-    def create_pagination_schema(self):
-        pass
+    def create_pagination_schema(self, current_page, page_obj):
+        """
+        Schema of pagination result
+        :param current_page:
+        Current page of request
+        :param page_obj: 
+        sqlalchemy pagination object
+        """
+        return {
+            'hasNext': page_obj.has_next,
+            'hasPrev': page_obj.has_prev,
+            'currentPage': current_page,
+            'pages': page_obj.pages,
+            'size': page_obj.per_page,
+            'totalElements': page_obj.total,
+        }
