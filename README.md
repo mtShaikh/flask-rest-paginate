@@ -44,7 +44,7 @@ pagination.paginate(AuthorModel, marshamllow_author_schema, True)
 
 ## Customize your pagination schema
 
-If you want create a custom pagination schema. You will create a custom pagination class and override the create_pagination_schema 
+If you want create a custom pagination schema. You should will create a custom pagination class and override the create_pagination_schema. Dont forget thios method must return a python dict
 ```
 from flask_rest_pagination import Pagination
 
