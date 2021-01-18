@@ -1,7 +1,6 @@
 import random
 from flask import Flask
-from flask_restful import Api, Resource, marshal_with_field
-from flask_sqlalchemy import SQLAlchemy
+from flask_restful import Api, Resource
 from flask_rest_paginate import Pagination
 from marshmallow import Schema, fields
 
@@ -11,16 +10,12 @@ Initialize the app
 app = Flask(__name__)
 api = Api(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///paginate-test.db"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
-
 # Possible configurations for Paginate
 # app.config['PAGINATE_PAGE_SIZE'] = 20
 # app.config['PAGINATE_PAGE_PARAM'] = "pagenumber"
 # app.config['PAGINATE_SIZE_PARAM'] = "pagesize"
 # app.config['PAGINATE_RESOURCE_LINKS_ENABLED'] = False
-pagination = Pagination(app, db)
+pagination = Pagination(app)
 
 class CalculationSchema(Schema):
     calculation_time = fields.Str()
@@ -42,7 +37,7 @@ class CalculationList(Resource):
             """
             Returns the largest prime factor of a number
             :param n:
-            :return:
+            :return: The largest prime factor of a number
             """
             i = 2
             while i * i <= n:
