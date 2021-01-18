@@ -3,7 +3,6 @@ from collections import OrderedDict
 from flask import request, url_for
 import flask_restful as f
 
-
 class Pagination:
     DEFAULT_PAGE_NUMBER = 1
     _default_page_size = 20
@@ -60,8 +59,12 @@ class Pagination:
             size = self._default_page_size
 
         # TODO: linked to db exception
-        # if Model, run the default query
-        if isinstance(query_model, type(self._db.Model)):
+        # if model is a list
+        if isinstance(query_model, list):
+            from flask_rest_paginate.list_pagination import paginate, ListPagination
+            page_obj = paginate(query_model, page=page_num, per_page=size)
+        # elif it is an SQLAlchemy model
+        elif isinstance(query_model, type(self._db.Model)):
             # `error_out` makes it so that it doesnt throw a 404 when page_num is
             # above total page limit
             page_obj = query_model.query.paginate(page=page_num, per_page=size, error_out=False)
