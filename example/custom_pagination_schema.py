@@ -2,23 +2,7 @@ from faker import Faker
 from flask import Flask
 from flask_restful import Api, Resource, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
-from flask_rest_paginate import Pagination as BasePagination
-
-"""
-Custom pagination schema class
-"""
-class CustomPagination(BasePagination):
-    def create_pagination_schema(self, current_page, page_obj):
-        #the method must return object
-        return  {
-            'next': page_obj.has_next,
-            'prev': page_obj.has_prev,
-            'current': current_page,
-            'pages': page_obj.pages,
-            'per_page': page_obj.per_page,
-            'total': page_obj.total,
-        }
-
+from flask_rest_paginate import Pagination
 
 """
 Initialize the app
@@ -35,7 +19,7 @@ db = SQLAlchemy(app)
 # app.config['PAGINATE_PAGE_PARAM'] = "pagenumber"
 # app.config['PAGINATE_SIZE_PARAM'] = "pagesize"
 # app.config['PAGINATE_RESOURCE_LINKS_ENABLED'] = False
-pagination = CustomPagination(app, db)
+pagination = Pagination(app, db)
 
 
 """
@@ -95,7 +79,14 @@ class Author(Resource):
 class AuthorList(Resource):
     def get(self):
         # Can also pass the model directly, in which case, no filters can be attached
-        return pagination.paginate(AuthorModel, author_fields)
+        return pagination.paginate(AuthorModel, author_fields,  pagination_schema_hook=lambda current_page, page_obj: {
+            "next": page_obj.has_next,
+            "prev": page_obj.has_prev,
+            "current": current_page,
+            "pages": page_obj.pages,
+            "per_page": page_obj.per_page,
+            "total": page_obj.total,
+        })
 
 
 """
