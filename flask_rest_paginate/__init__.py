@@ -103,7 +103,6 @@ class Pagination:
 
             current_page = page_obj.page
         #if has custom method for pagination schema
-        print(pagination_schema_hook)
         if pagination_schema_hook:
             try:
                 pagination_schema = pagination_schema_hook(current_page, page_obj)
