@@ -1,4 +1,3 @@
-from importlib import util
 from collections import OrderedDict
 from flask import request, url_for
 import flask_restful as f
@@ -61,7 +60,7 @@ class Pagination:
         # TODO: linked to db exception
         # if model is a list
         if isinstance(query_model, list):
-            from flask_rest_paginate.list_pagination import paginate, ListPagination
+            from flask_rest_paginate.list_pagination import paginate
             page_obj = paginate(query_model, page=page_num, per_page=size)
         # elif it is an SQLAlchemy model
         elif isinstance(query_model, type(self._db.Model)):

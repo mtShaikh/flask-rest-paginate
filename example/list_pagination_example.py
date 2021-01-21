@@ -27,7 +27,7 @@ Controllers
 class CalculationList(Resource):
     def get(self):
         """
-        Simulates a long running computation that needs to be
+        Simulates a computation that needs to be
         performed by a backend service.
         :return:
         """
