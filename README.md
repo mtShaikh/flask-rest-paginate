@@ -42,6 +42,25 @@ If you want to use marshmallow schemas then set the third param `True`
 pagination.paginate(AuthorModel, marshamllow_author_schema, True)
 ```
 
+## Customize your pagination schema
+
+If you want create a custom pagination schema. You should pass pagination_schema_hook and return a Dict with you custom schema
+```
+res = pagination.paginate(
+                AuthorModel,
+                schema,
+                True,
+                pagination_schema_hook=lambda current_page, page_obj: {
+                    "next": page_obj.has_next,
+                    "prev": page_obj.has_prev,
+                    "current": current_page,
+                    "pages": page_obj.pages,
+                    "per_page": page_obj.per_page,
+                    "total": page_obj.total,
+                },
+            )
+``` 
+
 
 ## Example:
 

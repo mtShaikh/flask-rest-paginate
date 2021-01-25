@@ -23,7 +23,7 @@ class Pagination:
         self._resource_links_enabled = app.config.setdefault('PAGINATE_RESOURCE_LINKS_ENABLED', True)
         app.extensions['paginate'] = self
 
-    def paginate(self, query_model, schema, marshmallow=False, post_query_hook=None):
+    def paginate(self, query_model, schema, marshmallow=False, post_query_hook=None, pagination_schema_hook=None):
         """
         paginate the query
         :param query_model:
@@ -40,6 +40,11 @@ class Pagination:
         used to execute operations on the queried data
         The function takes one argument: `func(data: List)` which is the list of retrieved objects
          from the db and must returns a list containing the objects
+        
+        :param pagination_schema_hook:
+        function called for create pagination object schema.
+        The function takes two argument: `func(current_page: Int, page_obj: SqlalchemyPaginationObject)` current_page is actual page in request and page_obj
+         is a sqlalchemy pagination object 
 
         """
         def _is_integer(num):
@@ -97,17 +102,22 @@ class Pagination:
                 next_page = page_obj.next_num
 
             current_page = page_obj.page
-
-        # TODO: make the pagination schema configurable
-        pagination_schema = {
-            'hasNext': page_obj.has_next,
-            'hasPrev': page_obj.has_prev,
-            'currentPage': current_page,
-            'pages': page_obj.pages,
-            'size': page_obj.per_page,
-            'totalElements': page_obj.total,
-        }
-
+        #if has custom method for pagination schema
+        if pagination_schema_hook:
+            try:
+                pagination_schema = pagination_schema_hook(current_page, page_obj)
+            except TypeError:
+                raise ValueError("Incorrect signature for pagination schema hook")
+        else:
+            pagination_schema = {
+                'hasNext': page_obj.has_next,
+                'hasPrev': page_obj.has_prev,
+                'currentPage': current_page,
+                'pages': page_obj.pages,
+                'size': page_obj.per_page,
+                'totalElements': page_obj.total,
+            }
+        
         if prev_page is not None:
             pagination_schema['prev'] = prev_page
         if next_page is not None:
@@ -125,7 +135,3 @@ class Pagination:
             'pagination': OrderedDict(sorted(pagination_schema.items())),
             'data': schema.dump(items, many=True) if marshmallow else f.marshal(page_obj.items, schema)
         }
-
-    # TODO: make the pagination schema configurable
-    def create_pagination_schema(self):
-        pass
