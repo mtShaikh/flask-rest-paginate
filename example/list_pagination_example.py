@@ -15,6 +15,8 @@ api = Api(app)
 # app.config['PAGINATE_PAGE_PARAM'] = "pagenumber"
 # app.config['PAGINATE_SIZE_PARAM'] = "pagesize"
 # app.config['PAGINATE_RESOURCE_LINKS_ENABLED'] = False
+# app.config['PAGINATE_PAGINATION_OBJECT_KEY'] = "pagination"
+# app.config['PAGINATE_DATA_OBJECT_KEY'] = "data"
 pagination = Pagination(app)
 
 class CalculationSchema(Schema):
