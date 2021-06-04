@@ -61,6 +61,47 @@ res = pagination.paginate(
             )
 ``` 
 
+You can also customize key names where data and pagination info are placed, setting the configuration variables:
+```
+app.config['PAGINATE_PAGINATION_OBJECT_KEY'] = "page_info"
+app.config['PAGINATE_DATA_OBJECT_KEY'] = "results"
+
+...
+
+{
+    "page_info": {
+        "currentPage": 1,
+        "hasNext": false,
+        "hasPrev": false,
+        "pages": 1,
+        "size": 20,
+        "totalElements": 2
+    }
+    "results": {
+        ...
+    }
+}
+```
+
+Furthermore, pagination info can be moved directly to the root of the result object:
+```
+app.config['PAGINATE_PAGINATION_OBJECT_KEY'] = None
+app.config['PAGINATE_DATA_OBJECT_KEY'] = "results"
+
+...
+
+{
+    "currentPage": 1,
+    "hasNext": false,
+    "hasPrev": false,
+    "pages": 1,
+    "size": 20,
+    "totalElements": 2
+    "results": {
+        ...
+    }
+}
+```
 
 ## Example:
 

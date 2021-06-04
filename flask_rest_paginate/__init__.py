@@ -7,6 +7,8 @@ class Pagination:
     _default_page_size = 20
     _page_param = 'page'
     _size_param = 'size'
+    _pagination_object_key = 'pagination'
+    _data_object_key = 'data'
     _resource_links_enabled = True
 
     def __init__(self, app=None, db=None):
@@ -17,6 +19,8 @@ class Pagination:
         self._db = db
         self._page_param = app.config.setdefault('PAGINATE_PAGE_PARAM', 'page')
         self._size_param = app.config.setdefault('PAGINATE_SIZE_PARAM', 'size')
+        self._pagination_object_key = app.config.setdefault('PAGINATE_PAGINATION_OBJECT_KEY', 'pagination')
+        self._data_object_key = app.config.setdefault('PAGINATE_DATA_OBJECT_KEY', 'data')
         self._default_page_size = app.config.setdefault('PAGINATE_PAGE_SIZE', 20)
         self._resource_links_enabled = app.config.setdefault('PAGINATE_RESOURCE_LINKS_ENABLED', True)
         app.extensions['paginate'] = self
@@ -132,8 +136,12 @@ class Pagination:
             except TypeError:
                 raise ValueError("Incorrect signature for hook")
 
-        return {
-            # TODO: use a better name for the pagination object
-            'pagination': OrderedDict(sorted(pagination_schema.items())),
-            'data': schema.dump(items, many=True) if marshmallow else f.marshal(page_obj.items, schema)
-        }
+        ret = {}
+        ret[self._data_object_key] = schema.dump(items, many=True) if marshmallow else f.marshal(page_obj.items, schema)
+        pagination_object = OrderedDict(sorted(pagination_schema.items()))
+        if self._pagination_object_key:
+            ret[self._pagination_object_key] = pagination_object
+        else:
+            ret = {**ret, **pagination_object}
+
+        return ret

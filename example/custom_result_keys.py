@@ -19,8 +19,8 @@ db = SQLAlchemy(app)
 # app.config['PAGINATE_PAGE_PARAM'] = "pagenumber"
 # app.config['PAGINATE_SIZE_PARAM'] = "pagesize"
 # app.config['PAGINATE_RESOURCE_LINKS_ENABLED'] = False
-# app.config['PAGINATE_PAGINATION_OBJECT_KEY'] = "pagination"
-# app.config['PAGINATE_DATA_OBJECT_KEY'] = "data"
+app.config['PAGINATE_PAGINATION_OBJECT_KEY'] = "page_info"
+app.config['PAGINATE_DATA_OBJECT_KEY'] = "results"
 pagination = Pagination(app, db)
 
 
@@ -81,14 +81,8 @@ class Author(Resource):
 class AuthorList(Resource):
     def get(self):
         # Can also pass the model directly, in which case, no filters can be attached
-        def author_name_to_lower(data):
-            for item in data:
-                name = getattr(item, "name")
-                if name:
-                    name = name.lower()
-                    item.name = name
-            return data
-        return pagination.paginate(AuthorModel, author_fields, post_query_hook=author_name_to_lower)
+        return pagination.paginate(AuthorModel, author_fields)
+        return pagination.paginate(AuthorModel, author_fields)
 
 
 """
